@@ -23,7 +23,7 @@ class MainScreen extends StatelessWidget {
     var taskProvider = context.watch<TaskProvider>();
 
     return Scaffold(
-      backgroundColor: Colors.blueGrey[50], // Light background
+      backgroundColor: Colors.blueGrey[50], 
       appBar: AppBar(
         title: const Text("To-Do App"),
         backgroundColor: Colors.blueAccent,
