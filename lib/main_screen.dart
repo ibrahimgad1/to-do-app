@@ -20,20 +20,28 @@ class MainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var taskProvider = context.watch<TaskProvider>(); // Listen for changes
+    var taskProvider = context.watch<TaskProvider>();
 
     return Scaffold(
+      backgroundColor: Colors.blueGrey[50], // Light background
       appBar: AppBar(
         title: const Text("To-Do App"),
+        backgroundColor: Colors.blueAccent,
+        elevation: 5,
         actions: [
           IconButton(
-            icon: const Icon(Icons.add),
+            icon: const Icon(Icons.add, color: Colors.white),
             onPressed: () => _navigateToAddTask(context),
           ),
         ],
       ),
       body: taskProvider.tasks.isEmpty
-          ? const Center(child: Text("No tasks added"))
+          ? const Center(
+        child: Text(
+          "No tasks added yet!",
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500, color: Colors.grey),
+        ),
+      )
           : Padding(
         padding: const EdgeInsets.all(16.0),
         child: ListView.builder(
@@ -46,25 +54,46 @@ class MainScreen extends StatelessWidget {
                 taskProvider.deleteTask(index);
               },
               background: Container(
-                color: Colors.red,
+                decoration: BoxDecoration(
+                  color: Colors.redAccent,
+                  borderRadius: BorderRadius.circular(12),
+                ),
                 alignment: Alignment.centerLeft,
                 padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: const Icon(Icons.delete, color: Colors.white),
+                child: const Icon(Icons.delete, color: Colors.white, size: 30),
               ),
               child: Card(
+                elevation: 4,
+                margin: const EdgeInsets.symmetric(vertical: 8),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15),
+                ),
                 child: ListTile(
-                  leading: Checkbox(
-                    value: false,
-                    onChanged: (bool? checked) {
-                      if (checked == true) {
-                        taskProvider.deleteTask(index);
-                      }
-                    },
+                  contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                  leading: Transform.scale(
+                    scale: 1.2,
+                    child: Checkbox(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      activeColor: Colors.blueAccent,
+                      value: false,
+                      onChanged: (bool? checked) {
+                        if (checked == true) {
+                          taskProvider.deleteTask(index);
+                        }
+                      },
+                    ),
                   ),
-                  title: Text(taskProvider.tasks[index]["title"]!),
+                  title: Text(
+                    taskProvider.tasks[index]["title"]!,
+                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                  ),
                   subtitle: Text(
                     "Duration: ${taskProvider.tasks[index]["duration"]} min | Category: ${taskProvider.tasks[index]["category"]}",
+                    style: const TextStyle(fontSize: 14, color: Colors.grey),
                   ),
+                  trailing: const Icon(Icons.arrow_forward_ios, size: 18, color: Colors.grey),
                   onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -80,3 +109,4 @@ class MainScreen extends StatelessWidget {
     );
   }
 }
+
